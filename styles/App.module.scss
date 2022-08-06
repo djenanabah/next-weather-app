@@ -1,9 +1,10 @@
-@import 'colors.scss';
 
 .container {
   display: flex;
   flex-direction: column;
   padding: 20px;
+  background-image: url("../public/sunny.jpg");
+  background-size: cover;
 }
 
 .cardList {

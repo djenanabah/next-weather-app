@@ -1,0 +1,24 @@
+@import '../styles/mixins.scss';
+
+.cardDay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cardDayName {
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.cardDayTempInfo {
+  font-size: 1rem;
+  font-weight: light;
+}
+
+.cardDayMinTemp {
+  font-weight: 400;
+  }
+
+.cardDayMaxTemp {
+  font-weight: 800;
+}

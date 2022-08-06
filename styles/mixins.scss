@@ -1,0 +1,18 @@
+// Google font 
+@import url(https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap);
+
+
+$border-color: #00000032;
+$item-background-color: #00000025;
+
+@mixin shadow {
+  box-shadow: 1px 1px 2px #101010;
+}
+
+@mixin text{
+  font-family: 'Kalam', cursive;
+  font-size: 1.5rem;
+  font-weight: lighter;
+  color: white;
+  text-shadow: 1px 1px 2px #101010;
+}

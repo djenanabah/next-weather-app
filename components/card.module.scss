@@ -1,0 +1,70 @@
+@import '../styles/mixins.scss';
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 3vh;
+  padding: 20px;
+  background-color: $item-background-color;
+}
+
+.cardCityName {
+  font-size: 5rem;
+  width: 30%;
+}
+
+.cardTodayInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 20px;
+  font-weight: 800;
+}
+
+.cardCurrentWeather {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-weight: 800;
+}
+
+.cardCurrentTemp {
+  @include text;
+  font-size: 3rem;
+}
+
+.cardCurrentTime {
+  @include text;
+  font-size: 3rem;
+}
+
+.cardIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cardWeekInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 2vh;
+  background-color: #10101020;
+}
+
+.cardSvg {
+  width: 50px;
+  height: 50px;
+  filter: drop-shadow(1px 1px 2px #101010);
+}
+
+.cardSvg.big {
+  width: 150px;
+  height: 150px;
+}
+
+.cardIconTxt {
+  font-size: 2rem;
+}

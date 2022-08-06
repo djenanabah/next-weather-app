@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import CardItem from '../components/CardItem'
+import Card from '../components/card'
 import styles from '../styles/App.module.scss'
 
 const App: NextPage = () => {
@@ -13,7 +13,7 @@ const App: NextPage = () => {
       </Head>
 
       <div className={styles.cardList}>
-        <CardItem />
+        <Card/>
       </div>
     </div>
   )
