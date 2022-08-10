@@ -1,4 +1,3 @@
-
 export type Day = 
     | 'Monday'
     | 'Tuesday'
@@ -6,7 +5,17 @@ export type Day =
     | 'Thursday' 
     | 'Friday' 
     | 'Saturday' 
-    | 'Sunday'  
+    | 'Sunday'
+
+export const allDays: Day[] = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday'
+]
 
 export function localizeDay(day: Day): string {
     switch (day) {

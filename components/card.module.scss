@@ -34,6 +34,23 @@
   font-size: 3rem;
 }
 
+.cardCurrentMinMaxTemp {
+  @include text;
+  font-size: 2rem;
+}
+
+.cardCurrentMin {
+  @include text;
+  font-size: 2rem;
+  font-weight: 400;
+  }
+
+.cardCurrentMax {
+  @include text;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
 .cardCurrentTime {
   @include text;
   font-size: 3rem;
