@@ -4,7 +4,9 @@ import CardDay from './card-day';
 import { localizeWeather } from '../model/weatherKind';
 import { CityId, DailyWeatherState, useCity, useListCities, WeatherState } from '../store/store';
 import { WeatherIcon } from './weather-icon';
+import { AiOutlineLoading } from "react-icons/ai";
 import { allDays, Day } from '../model/day';
+import { extractLoadable, matchLoadable } from '../model/fetchable';
 
 export type CardProps = {
   city: CityId
@@ -12,10 +14,10 @@ export type CardProps = {
 
 type DayDate = {
   day: Day,
-  weatherDay: DailyWeatherState
+  weatherDay: DailyWeatherState | undefined
 }
 
-function listNextDays(weatherState: WeatherState): DayDate[] {
+function listNextDays(weatherState: WeatherState | undefined): DayDate[] {
   const today = new Date();
   const days: DayDate[] = [];
 
@@ -25,7 +27,7 @@ function listNextDays(weatherState: WeatherState): DayDate[] {
     const isoDate = day.toISOString().split('T')[0]
     days.push({
       day: dayName,
-      weatherDay: weatherState.dailyWeather.find(d => d.date === isoDate)!
+      weatherDay: weatherState?.dailyWeather?.find(d => d.date === isoDate)
     });
   }
 
@@ -35,28 +37,39 @@ function listNextDays(weatherState: WeatherState): DayDate[] {
 const Card: React.FC<CardProps> =  (props) => {
   const cityState = useCity(props.city)
   const weatherState = cityState.weather
+  const maybeWeatherState = extractLoadable(weatherState)
   const now = (new Date()).toLocaleTimeString('fr-FR', { timeZone: cityState.timezone, timeStyle: 'short' }); 
-  const weatherDays = listNextDays(weatherState);
+  const weatherDays = listNextDays(maybeWeatherState);
+
+  const weatherIcon = matchLoadable(weatherState, {
+    loaded: (weatherState: WeatherState) => {
+      return <WeatherIcon weather={weatherState.currentWeather} classes={[styles.cardSvg, styles.big]}/>;
+    },
+    loading: (oldData: WeatherState | undefined) => {
+      return <AiOutlineLoading className={`${styles.cardSvg} ${styles.big} ${styles.rotateAnim}`}/>;
+    },
+    error: (oldData: WeatherState | undefined, msg: string) => {
+      return <div className={styles.errorMessage}>Désolé, nous n'avons pas pu {oldData ? 'actualiser' : 'charger'} les données {":("}</div>;
+    },
+  })
 
   return (
     <div className={styles.card}>
     <div className={styles.cardTodayInfo}>
       <h2 className={styles.cardCityName}>{cityState.name}</h2>
       <div className={styles.cardIcon}>
-        <WeatherIcon weather={weatherState.currentWeather} classes={[styles.cardSvg, styles.big]}/>
-        <p className={styles.cardIconTxt}>{ localizeWeather(weatherState.currentWeather) }</p>
+        {weatherIcon}
+        {maybeWeatherState ? <p className={styles.cardIconTxt}>{ localizeWeather(maybeWeatherState.currentWeather) }</p> : undefined}
       </div>
       <div className={styles.cardCurrentWeather}>
-        <div className={styles.cardCurrentTemp}>{weatherState.currentTemperature}°</div>
-        <p className={styles.cardCurrentMinMaxTemp}>
-          <span className={styles.cardCurrentMin}>min {weatherState.minTemperature}°</span> - max <span className={styles.cardCurrentMax}>{weatherState.maxTemperature}°</span>
-        </p>
+        {maybeWeatherState ? <div className={styles.cardCurrentTemp}>{maybeWeatherState.currentTemperature}°</div> : undefined}
+        { maybeWeatherState ? <p className={styles.cardCurrentMinMaxTemp}> <span className={styles.cardCurrentMin}>min {maybeWeatherState.minTemperature}°</span> - max <span className={styles.cardCurrentMax}>{maybeWeatherState.maxTemperature}°</span> </p> : undefined }
         <div className={styles.cardCurrentTime}>{now}</div>
       </div>
     </div>
     <div className={styles.cardWeekInfo}>
       {weatherDays.map(({ day, weatherDay }) => (
-        <CardDay key={day} day={day} minTemp={weatherDay.min} maxTemp={weatherDay.max} weather={weatherDay.weather}/>
+        <CardDay key={day} day={day} weatherInfo={weatherDay}/>
       ))}
     </div>
   </div>
