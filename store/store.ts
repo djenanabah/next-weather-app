@@ -44,43 +44,43 @@ const defaultState: State = {
                 currentTemperature: 10,
                 minTemperature: 5,
                 maxTemperature: 15,
-                currentWeather: "Sunny",
+                currentWeather: 'Clear',
                 dailyWeather: [
                     {
                         date: "2022-08-10",
                         min: 10,
                         max: 20,
-                        weather: "Sunny"
+                        weather: 'Clear'
                     },
                     {
                         date: "2022-08-11",
                         min: 12,
                         max: 22,
-                        weather: "Sunny"
+                        weather: 'Cloudy'
                     },
                     {
                         date: "2022-08-12",
                         min: 14,
                         max: 24,
-                        weather: "Sunny"
+                        weather: 'Rain'
                     },
                     {
                         date: "2022-08-13",
                         min: 16,
                         max: 26,
-                        weather: "Sunny"
+                        weather: 'Snow'
                     },
                     {
                         date: "2022-08-14",
                         min: 18,
                         max: 28,
-                        weather: "Sunny"
+                        weather: 'Thunderstorm'
                     },
                     {
                         date: "2022-08-15",
                         min: 20,
                         max: 30,
-                        weather: "Sunny"
+                        weather: 'Clear'
                     }
                 ]
             }

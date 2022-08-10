@@ -1,9 +1,13 @@
 import { IconType } from 'react-icons';
-import { WiDaySunny } from 'react-icons/wi';
+import { WiCloud, WiDaySunny, WiRain, WiSnow, WiThunderstorm } from 'react-icons/wi';
 import { WeatherKind, WeatherMapping } from '../model/weatherKind';
 
 const weatherToIco: WeatherMapping<IconType> = {
-    'Sunny': WiDaySunny
+    'Clear': WiDaySunny,
+    'Cloudy': WiCloud,
+    'Rain': WiRain,
+    'Snow': WiSnow,
+    'Thunderstorm': WiThunderstorm,
   }
 
 export type weatherIconProps = {
