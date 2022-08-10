@@ -1,8 +1,10 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
+import { setupListeners } from '@reduxjs/toolkit/query'
 import { Fetchable } from "../model/fetchable";
 import { WeatherKind } from "../model/weatherKind";
 import { EqArrayByRef } from "../utils/Eq";
+import { weatherApi } from "./api";
 
 export type CreateTodoAction = {
 };
@@ -28,7 +30,8 @@ export type CityState = {
     id: CityId;
     name: string;
     timezone: string;
-    weather: Fetchable<WeatherState>;
+    latitude: number;
+    longitude: number;
 }
 
 export type State = {
@@ -40,55 +43,9 @@ const defaultState: State = {
         {
             id: 1,
             name: "Paris",
-            timezone: "Europe/Paris",
-            weather: {
-                kind: "error",
-                error: 'undefined exception',
-                oldData: {
-                    currentTemperature: 10,
-                    minTemperature: 5,
-                    maxTemperature: 15,
-                    currentWeather: 'Clear',
-                    dailyWeather: [
-                        {
-                            date: "2022-08-10",
-                            min: 10,
-                            max: 20,
-                            weather: 'Clear'
-                        },
-                        {
-                            date: "2022-08-11",
-                            min: 12,
-                            max: 22,
-                            weather: 'Cloudy'
-                        },
-                        {
-                            date: "2022-08-12",
-                            min: 14,
-                            max: 24,
-                            weather: 'Rain'
-                        },
-                        {
-                            date: "2022-08-13",
-                            min: 16,
-                            max: 26,
-                            weather: 'Snow'
-                        },
-                        {
-                            date: "2022-08-14",
-                            min: 18,
-                            max: 28,
-                            weather: 'Thunderstorm'
-                        },
-                        {
-                            date: "2022-08-15",
-                            min: 20,
-                            max: 30,
-                            weather: 'Clear'
-                        }
-                    ]
-                }
-            }
+            timezone: "Europe/Berlin",
+            latitude: 48.8567,
+            longitude: 2.3510,
         }
     ]
 }
@@ -110,7 +67,10 @@ export function dispatchCreateTodo() {
 export const store = configureStore({
   reducer: {
     [weatherSlice.name]: weatherSlice.reducer,
-  }
+    [weatherApi.reducerPath]: weatherApi.reducer
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(weatherApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -122,3 +82,7 @@ export function useListCities(): CityId[] {
 export function useCity(id: CityId): CityState {
     return useSelector((s: RootState) => s.weather.cities.find(c => c.id === id)!);
 }
+
+// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
+// see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
+setupListeners(store.dispatch)

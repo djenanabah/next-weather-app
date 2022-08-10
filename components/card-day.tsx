@@ -1,5 +1,4 @@
 import { Day, localizeDay } from '../model/day';
-import { WeatherKind, WeatherMapping } from '../model/weatherKind';
 import { DailyWeatherState } from '../store/store';
 import styles from './card-day.module.scss';
 import cardStyles from './card.module.scss';
