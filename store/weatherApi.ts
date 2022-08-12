@@ -84,13 +84,13 @@ export function useForecastApi(cityId: CityId): Fetchable<WeatherState> {
     if (response.isError) {
         return {
             kind: 'error',
-            oldData: data,
+            data: data,
             error: 'unknown error'
         }
     } else if (response.isLoading || !data) {
         return {
             kind: 'loading',
-            oldData: data
+            data: data
         }
     } else {
         return {

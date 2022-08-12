@@ -1,10 +1,10 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { setupListeners } from '@reduxjs/toolkit/query'
-import { Fetchable } from "../model/fetchable";
 import { WeatherKind } from "../model/weatherKind";
 import { EqArrayByRef } from "../utils/eq";
-import { weatherApi } from "./api";
+import { weatherApi } from "./weatherApi";
+import { cityApi } from "./cityApi";
 
 export type CreateTodoAction = {
 };
@@ -67,10 +67,11 @@ export function dispatchCreateTodo() {
 export const store = configureStore({
   reducer: {
     [weatherSlice.name]: weatherSlice.reducer,
-    [weatherApi.reducerPath]: weatherApi.reducer
+    [weatherApi.reducerPath]: weatherApi.reducer,
+    [cityApi.reducerPath]: cityApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(weatherApi.middleware),
+    getDefaultMiddleware().concat(weatherApi.middleware, cityApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

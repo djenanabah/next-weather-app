@@ -1,0 +1,97 @@
+@import '../styles/mixins.scss';
+
+.searchBar {
+    display: flex;
+    align-items: stretch;
+    position: relative;
+    flex-direction: column;
+    margin: 0% 35%;
+}
+
+.searchInput {
+    font-size: 1.5rem;
+    display: flex;
+    border: 1px solid lightgrey;
+    appearance: none;
+    border-radius: 10px;
+    padding: 5px 20px;
+    height: 2.5rem;
+    color: black;
+    transition: all 0.2s;
+}
+
+.searchInput::placeholder {
+    @include text();
+}
+
+.searchInput:placeholder-shown {
+    background-color: #ffffff80;
+}
+.searchInput:not(:placeholder-shown) {
+    color: black;
+    background-color: white;
+}
+
+.searchInput:focus {
+    outline: none;
+}
+
+.searchInput.hasText {
+    // 
+}
+
+.searchInput.results {
+    border-radius: 10px 10px 0 0;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.searchResults {
+    animation: 0.2s ease-out 0s 1 fadeIn;
+    position: absolute;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    top: 100%;
+    margin: -1px 0 0 0;
+    background-color: #ffffff80;
+    z-index: 1;
+    border: 1px solid lightgrey;
+    border-radius: 0 0 10px 10px;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+}
+
+.searchResultEntry {
+    @include text();
+    display: flex;
+    flex-direction: row;
+    margin-top: 3px;
+    padding: 10px 30px;
+    background-color: #ffffff30;
+    color: black;    
+    text-shadow: 1px 1px 2px #efefef;
+    cursor: pointer;
+}
+
+.searchResultEntry:hover {
+    background-color: #ffffff;
+}
+
+.searchResultEntry:first-child {
+    border-top: unset;
+    margin-top: 0;
+    border-radius: 0;
+}
+
+.searchResultEntry:last-child {
+    border-top: unset;
+    border-radius: 0 0 10px 10px;
+}

@@ -5,8 +5,8 @@ import { CityId, DailyWeatherState, useCity, WeatherState } from '../store/store
 import { WeatherIcon } from './weather-icon';
 import { AiOutlineLoading } from "react-icons/ai";
 import { allDays, Day } from '../model/day';
-import { extractLoadable, matchLoadable } from '../model/fetchable';
-import { useForecastApi } from '../store/api';
+import { matchLoadable } from '../model/fetchable';
+import { useForecastApi } from '../store/weatherApi';
 
 export type CardProps = {
   city: CityId
@@ -37,7 +37,7 @@ function listNextDays(weatherState: WeatherState | undefined): DayDate[] {
 const Card: React.FC<CardProps> =  (props) => {
   const cityState = useCity(props.city)
   const weatherState = useForecastApi(cityState.id)
-  const maybeWeatherState = extractLoadable(weatherState)
+  const maybeWeatherState = weatherState.data
   const now = (new Date()).toLocaleTimeString('fr-FR', { timeZone: cityState.timezone, timeStyle: 'short' }); 
   const weatherDays = listNextDays(maybeWeatherState);
 

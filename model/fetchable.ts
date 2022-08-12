@@ -8,38 +8,27 @@ export type Loaded<T> = {
 
 export type Loading<T> = Readonly<{
     readonly kind: 'loading';
-    readonly oldData: T | undefined;
+    readonly data: T | undefined;
 }>
 
 export type Error<T> = {
     readonly kind: 'error';
     readonly error: string;
-    readonly oldData: T | undefined;
+    readonly data: T | undefined;
 }
 
 // ADT
 export type Fetchable<T> = Loaded<T> | Loading<T> | Error<T>;
 
 // Pattern matching
-export function matchLoadable<T, R>(loadable: Fetchable<T>, params: { loaded: (data: T) => R, loading: (oldData: T | undefined) => R, error: (oldData: T | undefined, msg: string) => R} ): R {
+export function matchLoadable<T, R>(loadable: Fetchable<T>, params: { loaded: (data: T) => R, loading: (data: T | undefined) => R, error: (data: T | undefined, msg: string) => R} ): R {
     switch (loadable.kind) {
         case 'loaded':
             return params.loaded(loadable.data);
         case 'loading':
-            return params.loading(loadable.oldData);
+            return params.loading(loadable.data);
         case 'error':
-            return params.error(loadable.oldData, loadable.error);
-    }
-}
-
-export function extractLoadable<T>(loadable: Fetchable<T>): T | undefined {
-    switch (loadable.kind) {
-        case 'loaded':
-            return loadable.data;
-        case 'loading':
-            return loadable.oldData;
-        case 'error':
-            return loadable.oldData;
+            return params.error(loadable.data, loadable.error);
     }
 }
 
@@ -49,9 +38,9 @@ function mapLoadable<A, B>(loadable: Fetchable<A>, f: (a: A) => B): Fetchable<B>
         case 'loaded':
             return { kind: 'loaded', data: f(loadable.data) };
         case 'loading':
-            return { kind: 'loading', oldData: loadable.oldData ? f(loadable.oldData) : undefined };
+            return { kind: 'loading', data: loadable.data ? f(loadable.data) : undefined };
         case 'error':
-            return { kind: 'error', error: loadable.error, oldData: loadable.oldData ? f(loadable.oldData) : undefined };
+            return { kind: 'error', error: loadable.error, data: loadable.data ? f(loadable.data) : undefined };
     }
 }
 
@@ -63,34 +52,27 @@ function flatMapLoadable<A, B>(loadable: Fetchable<A>, f: (a: A) => Fetchable<B>
             return f(loadable.data);
         case 'loading':
             {
-                if (!loadable.oldData) {
-                    return { kind: 'loading', oldData: undefined };
+                if (!loadable.data) {
+                    return { kind: 'loading', data: undefined };
                 } else {
-                    const fResult = f(loadable.oldData);
+                    const fResult = f(loadable.data);
                     switch (fResult.kind) {
                         case 'loaded':
-                            return { kind: 'loading', oldData: fResult.data };
+                            return { kind: 'loading', data: fResult.data };
                         case 'loading':
-                            return { kind: 'loading', oldData: fResult.oldData };
+                            return { kind: 'loading', data: fResult.data };
                         case 'error':
-                            return { kind: 'error', error: fResult.error, oldData: fResult.oldData };
+                            return { kind: 'error', error: fResult.error, data: fResult.data };
                     }
                 }
             }
         case 'error':
             {
-                if (!loadable.oldData) {
-                    return { kind: 'error', error: loadable.error, oldData: undefined };
+                if (!loadable.data) {
+                    return { kind: 'error', error: loadable.error, data: undefined };
                 } else {
-                    const fResult = f(loadable.oldData);
-                    switch (fResult.kind) {
-                        case 'loaded':
-                            return { kind: 'error', error: loadable.error, oldData: fResult.data };
-                        case 'loading':
-                            return { kind: 'error', error: loadable.error, oldData: fResult.oldData };
-                        case 'error':
-                            return { kind: 'error', error: loadable.error, oldData: fResult.oldData };
-                    }
+                    const fResult = f(loadable.data);
+                    return fResult
                 }
             }
     }

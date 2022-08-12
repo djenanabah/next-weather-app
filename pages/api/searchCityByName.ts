@@ -2,37 +2,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import fs from 'fs'
 import path from 'path'
-import readline from 'readline'
-
-type CityEntry = {
-    id: number,
-    name: string,
-    lowerCasedName: string,
-    countryCode: string,
-    latitute: number,
-    longitude: number,
-    timezone: string,
-    ranking: number
-}
-
-type SuccessResponse = {
-    status: 'success'
-    cities: CityEntry[]
-}
-
-type ErrorResponse = {
-    status: 'error'
-    error: string
-}
-
-type Response = SuccessResponse | ErrorResponse
-
-type CityRequest = {
-    name: string
-}
+import { CityEntry } from '../../model/cityEntry'
+import { CityApiErrorResponse, CityApiRequest, CityApiSuccessResponse } from '../../model/cityApiModel'
 
 function getCity(req: NextApiRequest): string | undefined {
-    const { name } = req.query as CityRequest
+    const { name } = req.query as CityApiRequest
     return name
 }
 
@@ -125,7 +99,7 @@ export function initCityApi() {
 
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response>
+  res: NextApiResponse<CityApiErrorResponse | CityApiSuccessResponse>
 ) {
     const cityName = getCity(req)?.toLowerCase()
     if (!cityName) {
@@ -135,8 +109,6 @@ export default function handler(
         })
         return
     }
-
-
 
     const results = state.cities.filter(city => city.lowerCasedName.includes(cityName))
 
