@@ -43,7 +43,7 @@ const defaultState: State = {
         {
             id: 1,
             name: "Paris",
-            timezone: "Europe/Berlin",
+            timezone: "Europe/Paris",
             latitude: 48.8567,
             longitude: 2.3510,
         }

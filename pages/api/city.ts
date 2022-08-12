@@ -11,7 +11,8 @@ type CityEntry = {
     countryCode: string,
     latitute: number,
     longitude: number,
-    timezone: string
+    timezone: string,
+    ranking: number
 }
 
 type SuccessResponse = {
@@ -36,14 +37,19 @@ function getCity(req: NextApiRequest): string | undefined {
 }
 
 type State = {
+    initialized: boolean,
     cities: CityEntry[]
 }
 
 const state: State = {
+    initialized: false,
     cities: []
 }
 
-
+if (!state.initialized) {
+    state.initialized = true
+    initCityApi()
+}
 
 // The main 'geoname' table has the following fields :
 // ---------------------------------------------------
@@ -69,10 +75,8 @@ const state: State = {
 
 
 export function initCityApi() {
-    console.log('initCityApi 0')
-    const p = path.resolve(__dirname, '../../../ressources/cities15000.txt')
+    const p = path.resolve(__dirname, '../../../../ressources/cities15000.txt')
     const data = fs.readFileSync(p, 'utf8');
-    console.log('initCityApi A')
 
     data.split('\n').forEach(line => {
         const [
@@ -108,12 +112,13 @@ export function initCityApi() {
             countryCode,
             latitute: parseFloat(latitude),
             longitude: parseFloat(longitude),
-            timezone
+            timezone,
+            ranking: parseInt(population)
         })
 
     })
 
-    console.log('initCityApi B')
+    state.cities.sort((a, b) => b.ranking - a.ranking)
 
     console.log(`Loaded ${state.cities.length} cities`)
 }

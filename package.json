@@ -3,12 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon --delay 2 --ext js,ts,tsx,scss,css --verbose --ignore dist --ignore .next --exec \"yarn run build && yarn run start\" --watch .",
-    "olddev": "next dev",
-    "build": "next build && tsc --project tsconfig.server.json",
-    "oldbuild": "next build",
-    "start": "cross-env NODE_ENV=production node dist/server/index.js",
-    "oldstart": "next start",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
