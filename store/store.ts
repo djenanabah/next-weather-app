@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { setupListeners } from '@reduxjs/toolkit/query'
 import { Fetchable } from "../model/fetchable";
 import { WeatherKind } from "../model/weatherKind";
-import { EqArrayByRef } from "../utils/Eq";
+import { EqArrayByRef } from "../utils/eq";
 import { weatherApi } from "./api";
 
 export type CreateTodoAction = {

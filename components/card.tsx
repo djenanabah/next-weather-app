@@ -49,7 +49,7 @@ const Card: React.FC<CardProps> =  (props) => {
       return <AiOutlineLoading className={`${styles.cardSvg} ${styles.big} ${styles.rotateAnim}`}/>;
     },
     error: (oldData: WeatherState | undefined, msg: string) => {
-      return <div className={styles.errorMessage}>Désolé, nous n'avons pas pu {oldData ? 'actualiser' : 'charger'} les données {":("}</div>;
+      return <div className={styles.errorMessage}>Désolé, nous n{"'"}avons pas pu {oldData ? 'actualiser' : 'charger'} les données {":("}</div>;
     },
   })
 
