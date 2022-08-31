@@ -84,7 +84,7 @@ export function initCityApi() {
             name,
             lowerCasedName: name.toLowerCase(),
             countryCode,
-            latitute: parseFloat(latitude),
+            latitude: parseFloat(latitude),
             longitude: parseFloat(longitude),
             timezone,
             ranking: parseInt(population)

@@ -6,7 +6,12 @@ import { EqArrayByRef } from "../utils/eq";
 import { weatherApi } from "./weatherApi";
 import { cityApi } from "./cityApi";
 
-export type CreateTodoAction = {
+export type AddCityAction = {
+    id: CityId;
+    name: string;
+    timezone: string;
+    latitude: number;
+    longitude: number;
 };
 
 export type CityId = number;
@@ -41,11 +46,11 @@ export type State = {
 const defaultState: State = {
     cities: [
         {
-            id: 1,
+            id: 2988507,
             name: "Paris",
             timezone: "Europe/Paris",
-            latitude: 48.8567,
-            longitude: 2.3510,
+            longitude: 2.3488,
+            latitude: 48.85341,
         }
     ]
 }
@@ -54,14 +59,17 @@ const weatherSlice = createSlice({
   name: "weather",
   initialState: defaultState,
   reducers: {
-    createTodo: (state: State, action: PayloadAction<CreateTodoAction>) => {
-      console.log('todo')
+    addCity: (state: State, action: PayloadAction<AddCityAction>) => {
+        const findResult = state.cities.find(city => city.id === action.payload.id);
+        if (!findResult) {
+            state.cities.push(action.payload)
+        }
     }
   },
 });
 
-export function dispatchCreateTodo() {
-  store.dispatch(weatherSlice.actions.createTodo({}));
+export function dispatchAddCity(city: AddCityAction) { 
+    store.dispatch(weatherSlice.actions.addCity(city));
 }
 
 export const store = configureStore({

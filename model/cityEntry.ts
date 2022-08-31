@@ -4,7 +4,7 @@ export type CityEntry = {
     name: string,
     lowerCasedName: string,
     countryCode: string,
-    latitute: number,
+    latitude: number,
     longitude: number,
     timezone: string,
     ranking: number
